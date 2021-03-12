@@ -1,0 +1,10 @@
+<html>
+<head>
+    To: {{ to.email }}
+</head>
+<body>
+<p>
+    Отчет за сегодня. В системе зарегистрировались: {% for user in users %} {{ user.name}} {% endfor %}. Их возраст соответственно: {% for user in users %} {{ user.age}} {% endfor %}. А вот их адреса: {% for user in users %} {{ user.email}} {% endfor %}.
+</p>
+</body>
+</html>
