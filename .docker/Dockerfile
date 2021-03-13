@@ -26,8 +26,6 @@ RUN cp .env.example .env \
 	&& php artisan key:generate \
 	&& rm -rf /usr/local/bin/composer \
 		./.docker \
-		./tests \
-		phpunit.xml \
 		composer.lock \
 		package.json \
 		webpack.mix.js \
