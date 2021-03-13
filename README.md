@@ -26,4 +26,4 @@ So, the final endpoint will look as following:
 
 ## Tests
 In order to run tests, please execute the following command:
-``phpunit ``
+``php artisan test --testsuite=Unit ``

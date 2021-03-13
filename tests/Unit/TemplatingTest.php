@@ -2,54 +2,69 @@
 
 namespace Tests\Unit;
 
+use App\Models\Template;
+use App\Models\User;
 use App\Repositories\Concrete\TemplateRepository;
 use App\Repositories\Contracts\TemplateRepositoryContract;
 use App\Services\RenderTemplateService;
+use App\Templating\Templating;
 use PHPUnit\Framework\TestCase;
+use Psy\CodeCleaner\UseStatementPass;
 
 class TemplatingTest extends TestCase
 {
-    protected RenderTemplateService $renderTemplateService;
+    protected string $baseDir;
 
-    protected TemplateRepository $templateRepository;
+    protected Templating $templating;
 
     public function setUp(): void
     {
         parent::setUp();
-
-        app()->bind(TemplateRepositoryContract::class, TemplateRepository::class);
-        $this->renderTemplateService = app()->make(RenderTemplateService::class);
-        $this->templateRepository = app()->make(TemplateRepository::class);
+        $this->baseDir =  dirname(__DIR__) . "../../";
+        $this->templating = app()->make(Templating::class);
     }
 
-    public function testTemplateRowContext()
+    public function testTemplateRowContextUserNameExists()
     {
-        $context = 'row';
+        $result = null;
 
-        $result = $this->renderTemplateService->handle($context);
-dump($result);
-        $expected = "<html>
-<head>
-    To: admin@admin.ru
-</head>
-<body>
-<p>
-    Отчет за сегодня. В системе зарегистрировались:
-            Alex Norton,
-            Marry Shawn,
-            Dan Hoff.
-        Их возраст соответственно:
-            67,
-            18,
-            34.
-        А вот их адреса:
-            alex@mail.com,
-            mary@gmail.com,
-            dan@ya.ru.
-    </p>
-</body>
-</html>";
+        $template = new Template();
+        $users = (new User())->getUsers();
 
-        $this->assertEquals($expected, $result);
+        $content = file_get_contents($this->baseDir . "app/Templates/template_1.twig");
+
+        $template->setTemplateType();
+        $template->setContent($content);
+
+        foreach($users as $user) {
+            $result .= $this->templating->compile($template, ['email' => $user['email'], 'name' => $user['name']]);
+            $result .= PHP_EOL;
+        }
+
+        $this->assertStringContainsString('Alex Norton', $result);
+        $this->assertStringContainsString('Marry Shawn', $result);
+        $this->assertStringContainsString('Dan Hoff', $result);
+    }
+
+    public function testTemplateRowContextUserEmailExists()
+    {
+        $result = null;
+
+        $template = new Template();
+        $users = (new User())->getUsers();
+
+        $content = file_get_contents($this->baseDir . "app/Templates/template_1.twig");
+
+        $template->setTemplateType();
+        $template->setContent($content);
+
+        foreach($users as $user) {
+            $result .= $this->templating->compile($template, ['email' => $user['email'], 'name' => $user['name']]);
+            $result .= PHP_EOL;
+        }
+
+        $this->assertStringContainsString('alex@mail.com', $result);
+        $this->assertStringContainsString('mary@gmail.com', $result);
+        $this->assertStringContainsString('dan@ya.ru', $result);
     }
 }
