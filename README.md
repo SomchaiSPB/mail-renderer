@@ -19,7 +19,9 @@ You can choose on of the following contexts:
 2. row
 
 So, the final endpoint will look as following:
+
 ``localhost:8000/api/render?context=table``
+
 ``localhost:8000/api/render?context=row``
 
 ## Tests

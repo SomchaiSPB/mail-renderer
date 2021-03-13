@@ -3,19 +3,8 @@
     To: {{ to.email }}
 </head>
 <body>
-<p>
-    Отчет за сегодня. В системе зарегистрировались:
-    {% for user in users %}
-        {{ user.name}}{{ not loop.last ? ',' : '.' }}
-    {% endfor %}
-    Их возраст соответственно:
-    {% for user in users %}
-        {{ user.age}}{{ not loop.last ? ',' : '.'}}
-    {% endfor %}
-    А вот их адреса:
-    {% for user in users %}
-        {{ user.email}}{{ not loop.last ? ',' : '.'}}
-    {% endfor %}
-</p>
+    Отчет за сегодня. В системе зарегистрировались: {% for user in users %}        {{ user.name}}{{ not loop.last ? ',' : '.' }}    {% endfor %}
+    Их возраст соответственно:    {% for user in users %}        {{ user.age}}{{ not loop.last ? ',' : '.'}}    {% endfor %}
+    А вот их адреса:    {% for user in users %}        {{ user.email}}{{ not loop.last ? ',' : '.'}}    {% endfor %}
 </body>
 </html>
