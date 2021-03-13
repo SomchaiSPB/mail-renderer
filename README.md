@@ -21,3 +21,7 @@ You can choose on of the following contexts:
 So, the final endpoint will look as following:
 ``localhost:8000/api/render?context=table``
 ``localhost:8000/api/render?context=row``
+
+## Tests
+In order to run tests, please execute the following command:
+``phpunit ``
