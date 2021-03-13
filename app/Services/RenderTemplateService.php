@@ -8,7 +8,6 @@ use App\Models\Template;
 use App\Models\User;
 use App\Repositories\Contracts\TemplateRepositoryContract;
 use App\Templating\Templating;
-use Illuminate\Support\Collection;
 
 class RenderTemplateService
 {
@@ -76,11 +75,12 @@ class RenderTemplateService
 
         $users = $this->getUsers();
 
-        $result = new Collection();
+        $result = '';
 
         if ($this->context === self::CONTEXT_ROW) {
             foreach ($users as $user) {
-                $result->push($this->templating->compile($template, ['email' => $user['email'], 'name' => $user['name']]));
+                $result .= $this->templating->compile($template, ['email' => $user['email'], 'name' => $user['name']]);
+                $result .= PHP_EOL;
             }
         } elseif ($this->context === self::CONTEXT_TABLE) {
             $result = $this->templating->compile($template, ['users' => $users, 'to' => ['email' => $this->getAdminUser()['email']]]);
