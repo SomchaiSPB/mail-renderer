@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Template;
+use App\Http\Requests\GetContextRequest;
 use App\Services\RenderTemplateService;
-use App\Templating\Templating;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Http\JsonResponse;
 
 class RenderController extends Controller
 {
+    private RenderTemplateService $renderTemplateService;
 
-
-    public function __invoke(Request $request)
+    public function __construct(RenderTemplateService $renderTemplateService)
     {
-        $data = require base_path('db_mock.php');
+        $this->renderTemplateService = $renderTemplateService;
+    }
 
-        $renderService = new RenderTemplateService(new Templating(), $data);
-        $template = new Template();
-        $template->setTemplateType(1);
-        $template->setContent(file_get_contents(base_path('app/Templates/template_common.twig')));
 
-        $content = $renderService->render($template);
+    public function __invoke(GetContextRequest $request)
+    {
+        $response = $this->renderTemplateService->handle($request->context);
 
-        return $content;
+        return response($response);
     }
 }

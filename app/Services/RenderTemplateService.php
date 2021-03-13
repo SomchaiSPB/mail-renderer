@@ -5,27 +5,87 @@ namespace App\Services;
 
 
 use App\Models\Template;
+use App\Models\User;
+use App\Repositories\Contracts\TemplateRepositoryContract;
 use App\Templating\Templating;
+use Illuminate\Support\Collection;
 
 class RenderTemplateService
 {
     private Templating $templating;
 
-    private array $data;
+    private TemplateRepositoryContract $templateRepository;
+
+    private int $context;
+
+    const CONTEXT_ROW = 1;
+
+    const CONTEXT_TABLE = 2;
 
     /**
      * RenderTemplateService constructor.
      * @param Templating $templating
-     * @param array $data
+     * @param TemplateRepositoryContract $templateRepository
      */
-    public function __construct(Templating $templating, array $data)
+    public function __construct(Templating $templating, TemplateRepositoryContract $templateRepository)
     {
         $this->templating = $templating;
-        $this->data = $data;
+        $this->templateRepository = $templateRepository;
     }
 
-    public function render(Template $template): string
+    public function handle(string $context): string
     {
-        return $this->templating->compile($template, ['users' => $this->data, 'to' => ['email' => 'admin@admin.ru']]);
+        switch ($context):
+            case 'table':
+                self::setContext($this::CONTEXT_TABLE);
+                break;
+            case 'row':
+                self::setContext($this::CONTEXT_ROW);
+                break;
+            default:
+                throw new \Exception('context is undefined');
+        endswitch;
+
+        return $this->render();
+    }
+
+    private function setContext(int $context): void
+    {
+        $this->context = $context;
+    }
+
+    private function getTemplate(): Template
+    {
+        return $this->templateRepository->find($this->context);
+    }
+
+    private function getUsers(): array
+    {
+        return (new User())->getUsers();
+    }
+
+    private function getAdminUser(): array
+    {
+        return (new User())->getAdminUser();
+    }
+
+    private function render(): string
+    {
+        $template = $this->getTemplate();
+        $template->setTemplateType();
+
+        $users = $this->getUsers();
+
+        $result = new Collection();
+
+        if ($this->context === self::CONTEXT_ROW) {
+            foreach ($users as $user) {
+                $result->push($this->templating->compile($template, ['email' => $user['email'], 'name' => $user['name']]));
+            }
+        } elseif ($this->context === self::CONTEXT_TABLE) {
+            $result = $this->templating->compile($template, ['users' => $users, 'to' => ['email' => $this->getAdminUser()['email']]]);
+        }
+
+        return $result;
     }
 }
