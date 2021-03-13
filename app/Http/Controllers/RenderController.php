@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetContextRequest;
 use App\Services\RenderTemplateService;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class RenderController extends Controller
 {
@@ -16,7 +16,7 @@ class RenderController extends Controller
     }
 
 
-    public function __invoke(GetContextRequest $request)
+    public function __invoke(GetContextRequest $request): Response
     {
         $response = $this->renderTemplateService->handle($request->context);
 
