@@ -6,7 +6,6 @@ run
 ``docker build -f .docker/Dockerfile -t renderer .
 ``
 
-
 ``docker run -d --name renderer -p 8000:8000 -t --name renderer renderer``
 
 ## Run application
@@ -25,5 +24,6 @@ So, the final endpoint will look as following:
 ``localhost:8000/api/render?context=row``
 
 ## Tests
-In order to run tests, please execute the following command:
+In order to run tests, please execute the following command after successful ``composer install`` command:
+
 ``php artisan test --testsuite=Unit ``
