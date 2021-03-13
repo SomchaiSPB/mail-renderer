@@ -11,7 +11,7 @@ use Twig\Environment;
 class TwigEngine extends AbstractEngine
 {
 
-    private $twig;
+    private Environment $twig;
 
     public function __construct()
     {
