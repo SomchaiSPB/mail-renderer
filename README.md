@@ -32,7 +32,8 @@ In order to run tests, please execute the following command after successful ``c
 `` php artisan test --filter TemplatingTableContextTest
 ``
 
-I don't know why, if we run all tests in batch, test TemplatingTableContextTest takes wrong template file.
+`` php artisan test --filter TwigEngineTest
+``
 
-``php artisan test --testsuite=Unit
+`` php artisan test --filter TemplateServiceTest
 ``

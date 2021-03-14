@@ -48,8 +48,9 @@ class Handler extends ExceptionHandler
         }
 
         if (env('app_debug')) {
-            dd($exception->getMessage());
+            dd($exception);
         }
+
 
         return response()->json(['message' => 'internal server error'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
