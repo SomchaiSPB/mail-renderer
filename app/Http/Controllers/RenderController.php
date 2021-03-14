@@ -18,7 +18,11 @@ class RenderController extends Controller
 
     public function __invoke(GetContextRequest $request): Response
     {
-        $response = $this->renderTemplateService->handle($request->context);
+        try {
+            $response = $this->renderTemplateService->handle($request->context);
+        } catch (\Exception $e) {
+            \Log::error('template_service_error', ['message' => $e->getMessage()]);
+        }
 
         return response($response);
     }

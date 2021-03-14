@@ -44,9 +44,9 @@ class TemplatingRowContextTest extends TestCase
             $result .= PHP_EOL;
         }
 
-        $this->assertStringContainsString('Alex Norton', $result);
-        $this->assertStringContainsString('Marry Shawn', $result);
-        $this->assertStringContainsString('Dan Hoff', $result);
+        $this->assertStringContainsString('Привет, Alex Norton', $result);
+        $this->assertStringContainsString('Привет, Marry Shawn', $result);
+        $this->assertStringContainsString('Привет, Dan Hoff', $result);
     }
 
     public function testTemplateRowContextUserEmailExists()

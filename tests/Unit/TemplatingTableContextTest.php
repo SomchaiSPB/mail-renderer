@@ -40,6 +40,7 @@ class TemplatingTableContextTest extends TestCase
 
         $result = $this->templating->compile($template, ['users' => $users, 'to' => ['email' => (new User())->getAdminUser()['email']]]);
 
+        $this->assertStringContainsString('В системе зарегистрировались:', $result);
         $this->assertStringContainsString('Alex Norton', $result);
         $this->assertStringContainsString('Marry Shawn', $result);
         $this->assertStringContainsString('Dan Hoff', $result);
@@ -57,9 +58,9 @@ class TemplatingTableContextTest extends TestCase
         $template->setTemplateType();
         $template->setContent($content);
 
-        $result = $this->templating
-->compile($template, ['users' => $users, 'to' => ['email' => (new User())->getAdminUser()['email']]]);
+        $result = $this->templating->compile($template, ['users' => $users, 'to' => ['email' => (new User())->getAdminUser()['email']]]);
 
+        $this->assertStringContainsString('А вот их адреса:', $result);
         $this->assertStringContainsString('alex@mail.com', $result);
         $this->assertStringContainsString('mary@gmail.com', $result);
         $this->assertStringContainsString('dan@ya.ru', $result);
