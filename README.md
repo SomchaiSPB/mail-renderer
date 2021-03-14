@@ -8,7 +8,7 @@ run
 ``docker build -f .docker/Dockerfile -t renderer .
 ``
 
-``docker run -d --name renderer -p 8000:8000 -t --name renderer renderer``
+``docker run -d -p 8000:8000 -t --name renderer renderer``
 
 ## Run application
 
