@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -41,6 +43,14 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        dd($exception->getMessage());
+        if ($exception instanceof ValidationException) {
+            return response()->json(['message' => $exception->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if (env('app_debug')) {
+            dd($exception->getMessage());
+        }
+
+        return response()->json(['message' => 'internal server error'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
