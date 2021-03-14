@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Template extends Model
 {
     protected string $content;
 
     protected int $templateType;
+
+    protected string $uuid;
 
     public function findOrFail(int $id): self
     {
@@ -56,5 +59,10 @@ class Template extends Model
     public function getTemplateType(): int
     {
         return $this->templateType;
+    }
+
+    public function getUuid(): string
+    {
+        return Str::uuid();
     }
 }
