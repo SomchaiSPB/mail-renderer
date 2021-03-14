@@ -13,7 +13,7 @@ run
 In order to render template call endpoint:
 ``localhost:8000/api/render?context=``
 
-You can choose on of the following contexts:
+You can choose one of the following contexts:
 1. table
 2. row
 
@@ -26,14 +26,5 @@ So, the final endpoint will look as following:
 ## Tests
 In order to run tests, please execute the following command after successful ``composer install`` command:
 
-`` php artisan test --filter TemplatingRowContextTest
-``
-
-`` php artisan test --filter TemplatingTableContextTest
-``
-
-`` php artisan test --filter TwigEngineTest
-``
-
-`` php artisan test --filter TemplateServiceTest
+`` php artisan test --testsuite=Unit
 ``
