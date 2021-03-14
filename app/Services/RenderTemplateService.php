@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Enums\ContextEnum;
+use App\Factories\Contracts\TemplateContextFactoryInterface;
 use App\Models\Template;
 use App\Repositories\Contracts\TemplateRepositoryContract;
 use App\Services\Concrete\RenderTemplateRow;
@@ -18,15 +19,19 @@ class RenderTemplateService
 
     private RenderTemplateCommonInterface $renderTemplate;
 
+    private TemplateContextFactoryInterface $templateFactory;
+
     private int $context;
 
     /**
      * RenderTemplateService constructor.
      * @param TemplateRepositoryContract $templateRepository
+     * @param TemplateContextFactoryInterface $templateFactory
      */
-    public function __construct(TemplateRepositoryContract $templateRepository)
+    public function __construct(TemplateRepositoryContract $templateRepository, TemplateContextFactoryInterface $templateFactory)
     {
         $this->templateRepository = $templateRepository;
+        $this->templateFactory = $templateFactory;
     }
 
     public function handle(string $context): string
@@ -34,15 +39,15 @@ class RenderTemplateService
         switch ($context):
             case 'table':
                 self::setContext(ContextEnum::CONTEXT_TABLE);
-                $this->renderTemplate = new RenderTemplateTable(new Templating());
                 break;
             case 'row':
                 self::setContext(ContextEnum::CONTEXT_ROW);
-                $this->renderTemplate = new RenderTemplateRow(new Templating());
                 break;
             default:
                 throw new \Exception('context is undefined');
         endswitch;
+
+        $this->renderTemplate = $this->templateFactory->createRenderTemplate($this->context);
 
         return $this->render();
     }

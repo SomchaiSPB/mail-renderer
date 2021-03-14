@@ -37,7 +37,7 @@ class TemplateServiceTest extends TestCase
     {
         $service = Mockery::mock(RenderTemplateService::class);
 
-        $service->shouldReceive('handle')->once()->andReturn('string');
+        $service->shouldReceive('handle')->with('row')->andReturn('string');
 
         $this->assertSame('string', $service->handle('row'));
     }
