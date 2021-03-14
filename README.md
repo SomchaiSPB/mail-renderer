@@ -26,4 +26,13 @@ So, the final endpoint will look as following:
 ## Tests
 In order to run tests, please execute the following command after successful ``composer install`` command:
 
-``php artisan test --testsuite=Unit ``
+`` php artisan test --filter TemplatingRowContextTest
+``
+
+`` php artisan test --filter TemplatingTableContextTest
+``
+
+I don't know why, if we run all tests in batch, test TemplatingTableContextTest takes wrong template file.
+
+``php artisan test --testsuite=Unit
+``

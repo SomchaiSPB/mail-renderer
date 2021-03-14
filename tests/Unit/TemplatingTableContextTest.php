@@ -23,7 +23,7 @@ class TemplatingTableContextTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->templating = app()->make(Templating::class);
+        unset($this->templating);
     }
 
     public function testTemplateTableContextUserNameExists()
